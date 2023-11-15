@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import {
 	orbitAnimation1,
@@ -54,6 +54,8 @@ const TimerButton = styled.button`
 	border-radius: 80px;
 	border: 0.5px solid var(--Beige, #fef2e7);
 	background: var(--Dark, #000300);
+	cursor: pointer;
+	z-index: 100;
 `
 
 const Circle = styled.div<CircleProps>`
@@ -70,14 +72,28 @@ const Circle = styled.div<CircleProps>`
 `
 
 const Timer = () => {
+	const [focusTime, setFocusTime] = useState(25)
+	const [breakTime, setBreakTime] = useState(5)
+
+	const handleDecrease = () => {
+		setFocusTime(prev => Math.max(prev - 5, 5))
+		setBreakTime(prev => Math.max(prev - 5, 5))
+	}
+
+	const handleIncrease = () => {
+		setFocusTime(prev => prev + 5)
+		setBreakTime(prev => prev + 5)
+	}
+
 	return (
 		<TimerContainer>
-			<TimeDisplay>25:00</TimeDisplay>
+			<button onClick={handleDecrease}>ghghhg</button>
+			<TimeDisplay>{focusTime}:00</TimeDisplay>
 			<ButtonsContainer>
-				<TimerButton>
+				<TimerButton onClick={handleDecrease}>
 					<Minus />
 				</TimerButton>
-				<TimerButton>
+				<TimerButton onClick={handleIncrease}>
 					<Plus />
 				</TimerButton>
 			</ButtonsContainer>
