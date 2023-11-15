@@ -27,7 +27,6 @@ const Separator = styled.div`
 function App() {
 	return (
 		<Container>
-			<button>huj</button>
 			<Header />
 			<Timer />
 			<StartButton text='START FOCUS' />

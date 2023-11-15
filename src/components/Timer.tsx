@@ -75,25 +75,30 @@ const Timer = () => {
 	const [focusTime, setFocusTime] = useState(25)
 	const [breakTime, setBreakTime] = useState(5)
 
-	const handleDecrease = () => {
-		setFocusTime(prev => Math.max(prev - 5, 5))
-		setBreakTime(prev => Math.max(prev - 5, 5))
-	}
+    const handleDecrease = (mode: string) => {
+        if (mode === 'focus') {
+            setFocusTime(prev => Math.max(prev - 5, 5));
+        } else if (mode === 'break') {
+            setBreakTime(prev => Math.max(prev - 5, 5));
+        }
+    };
 
-	const handleIncrease = () => {
-		setFocusTime(prev => prev + 5)
-		setBreakTime(prev => prev + 5)
-	}
+    const handleIncrease = (mode: string) => {
+        if (mode === 'focus') {
+            setFocusTime(prev => prev + 5);
+        } else if (mode === 'break') {
+            setBreakTime(prev => prev + 5);
+        }
+    };
 
-	return (
-		<TimerContainer>
-			<button onClick={handleDecrease}>ghghhg</button>
-			<TimeDisplay>{focusTime}:00</TimeDisplay>
-			<ButtonsContainer>
-				<TimerButton onClick={handleDecrease}>
-					<Minus />
-				</TimerButton>
-				<TimerButton onClick={handleIncrease}>
+    return (
+        <TimerContainer>
+            <TimeDisplay>{focusTime}:00</TimeDisplay>
+            <ButtonsContainer>
+                <TimerButton onClick={() => handleDecrease('focus')}>
+                    <Minus />
+                </TimerButton>
+                <TimerButton onClick={() => handleIncrease('focus')}>
 					<Plus />
 				</TimerButton>
 			</ButtonsContainer>
