@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import {
 	orbitAnimation1,
@@ -15,6 +15,11 @@ interface CircleProps {
 	left: string
 	opacity: number
 	animation: any
+}
+
+interface TimerState {
+    minutes: number;
+    seconds: number;
 }
 
 const TimerContainer = styled.div`
@@ -54,6 +59,8 @@ const TimerButton = styled.button`
 	border-radius: 80px;
 	border: 0.5px solid var(--Beige, #fef2e7);
 	background: var(--Dark, #000300);
+	cursor: pointer;
+	z-index: 100;
 `
 
 const Circle = styled.div<CircleProps>`
@@ -70,14 +77,49 @@ const Circle = styled.div<CircleProps>`
 `
 
 const Timer = () => {
+	const [mode, setMode] = useState('focus')
+    const [focusTime, setFocusTime] = useState<TimerState>({ minutes: 25, seconds: 0 });
+    const [breakTime, setBreakTime] = useState<TimerState>({ minutes: 5, seconds: 0 });
+
+
+	const handleDecrease = () => {
+		if (mode === 'focus') {
+			setFocusTime(prev => ({
+				...prev,
+				minutes: Math.max(prev.minutes - 5, 5),
+			}))
+		} else if (mode === 'break') {
+			setBreakTime(prev => ({
+				...prev,
+				minutes: Math.max(prev.minutes - 5, 5),
+			}))
+		}
+	}
+
+	const handleIncrease = () => {
+		if (mode === 'focus') {
+			setFocusTime(prev => ({ ...prev, minutes: prev.minutes + 5 }))
+		} else if (mode === 'break') {
+			setBreakTime(prev => ({ ...prev, minutes: prev.minutes + 5 }))
+		}
+	}
+
+    const formatTime = ({ minutes, seconds }: TimerState) => {
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        const formattedSeconds = seconds.toString().padStart(2, '0');
+        return `${formattedMinutes}:${formattedSeconds}`;
+    };
+
+    const currentTimerValue = mode === 'focus' ? focusTime : breakTime;
+
 	return (
 		<TimerContainer>
-			<TimeDisplay>25:00</TimeDisplay>
+			<TimeDisplay>{formatTime(currentTimerValue)}</TimeDisplay>
 			<ButtonsContainer>
-				<TimerButton>
+				<TimerButton onClick={handleDecrease}>
 					<Minus />
 				</TimerButton>
-				<TimerButton>
+				<TimerButton onClick={handleIncrease}>
 					<Plus />
 				</TimerButton>
 			</ButtonsContainer>
