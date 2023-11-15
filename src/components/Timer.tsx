@@ -17,6 +17,11 @@ interface CircleProps {
 	animation: any
 }
 
+interface TimerState {
+    minutes: number;
+    seconds: number;
+}
+
 const TimerContainer = styled.div`
 	margin-top: 150px;
 	position: relative;
@@ -72,33 +77,49 @@ const Circle = styled.div<CircleProps>`
 `
 
 const Timer = () => {
-	const [focusTime, setFocusTime] = useState(25)
-	const [breakTime, setBreakTime] = useState(5)
+	const [mode, setMode] = useState('focus')
+    const [focusTime, setFocusTime] = useState<TimerState>({ minutes: 25, seconds: 0 });
+    const [breakTime, setBreakTime] = useState<TimerState>({ minutes: 5, seconds: 0 });
 
-    const handleDecrease = (mode: string) => {
-        if (mode === 'focus') {
-            setFocusTime(prev => Math.max(prev - 5, 5));
-        } else if (mode === 'break') {
-            setBreakTime(prev => Math.max(prev - 5, 5));
-        }
+
+	const handleDecrease = () => {
+		if (mode === 'focus') {
+			setFocusTime(prev => ({
+				...prev,
+				minutes: Math.max(prev.minutes - 5, 5),
+			}))
+		} else if (mode === 'break') {
+			setBreakTime(prev => ({
+				...prev,
+				minutes: Math.max(prev.minutes - 5, 5),
+			}))
+		}
+	}
+
+	const handleIncrease = () => {
+		if (mode === 'focus') {
+			setFocusTime(prev => ({ ...prev, minutes: prev.minutes + 5 }))
+		} else if (mode === 'break') {
+			setBreakTime(prev => ({ ...prev, minutes: prev.minutes + 5 }))
+		}
+	}
+
+    const formatTime = ({ minutes, seconds }: TimerState) => {
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        const formattedSeconds = seconds.toString().padStart(2, '0');
+        return `${formattedMinutes}:${formattedSeconds}`;
     };
 
-    const handleIncrease = (mode: string) => {
-        if (mode === 'focus') {
-            setFocusTime(prev => prev + 5);
-        } else if (mode === 'break') {
-            setBreakTime(prev => prev + 5);
-        }
-    };
+    const currentTimerValue = mode === 'focus' ? focusTime : breakTime;
 
-    return (
-        <TimerContainer>
-            <TimeDisplay>{focusTime}:00</TimeDisplay>
-            <ButtonsContainer>
-                <TimerButton onClick={() => handleDecrease('focus')}>
-                    <Minus />
-                </TimerButton>
-                <TimerButton onClick={() => handleIncrease('focus')}>
+	return (
+		<TimerContainer>
+			<TimeDisplay>{formatTime(currentTimerValue)}</TimeDisplay>
+			<ButtonsContainer>
+				<TimerButton onClick={handleDecrease}>
+					<Minus />
+				</TimerButton>
+				<TimerButton onClick={handleIncrease}>
 					<Plus />
 				</TimerButton>
 			</ButtonsContainer>
