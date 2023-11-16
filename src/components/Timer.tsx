@@ -126,6 +126,9 @@ const Timer = () => {
 	const isFocusTimeZero = focusTime.minutes === 0 && focusTime.seconds === 0
 	const formattedOvertime = isFocusTimeZero ? `+${formatTime(overtime)}` : ''
 
+	const test = () => {
+		setFocusTime({ minutes: 0, seconds: 5 })
+	}
 	return (
 		<TimerContainer>
 			<TimeDisplay>{formatTime(currentTimerValue)}</TimeDisplay>
@@ -140,6 +143,7 @@ const Timer = () => {
 				</ButtonsContainer>
 			)}
 			{mode === 'focus' && isFocusCompleted && <Overtime>{formattedOvertime}</Overtime>}
+			<button onClick={test} style={{ zIndex: 999, position: 'relative' }}>huj</button>
 			<Circle animation={isTimerRunning ? orbitAnimation1 : ''} top='-105px' left='-150px' opacity={0.8} />
 			<Circle animation={isTimerRunning ? orbitAnimation2 : ''} top='-125px' left='-170px' opacity={0.4} />
 			<Circle animation={isTimerRunning ? orbitAnimation3 : ''} top='-115px' left='-70px' opacity={0.2} />

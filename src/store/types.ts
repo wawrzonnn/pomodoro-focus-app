@@ -3,6 +3,12 @@ export interface TimerState {
     seconds: number;
 }
 
+export interface Log {
+    mode: 'BREAK' | 'FOCUS';
+    time: number;
+    createdAt: Date;
+  }
+
 export interface StoreState {
     mode: 'focus' | 'break';
     focusTime: TimerState;
@@ -21,4 +27,5 @@ export interface StoreState {
     timerPaused: boolean;
     isFocusCompleted: boolean;
     isBreakCompleted: boolean;
+    saveLog: (log: Log) => void;
 }
