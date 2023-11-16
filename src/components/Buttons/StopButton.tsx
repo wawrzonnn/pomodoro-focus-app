@@ -1,9 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import useStore from '../../store/store';
 
-interface StopButtonProps {
-	text: string
-}
 
 const StyledButton = styled.button`
 	margin-top: 25px;
@@ -21,8 +19,34 @@ const StyledButton = styled.button`
 	outline: none;
 `
 
-export const StopButton = ({ text }: StopButtonProps) => {
-	return <StyledButton>{text}</StyledButton>
-}
+export const StopButton = () => {
+    const { isTimerRunning, timerPaused, mode, setMode, cancelFocusMode, focusTime, setFocusTime, startTimer, isFocusCompleted } = useStore();
+    const isFocusTimeZero = focusTime.minutes === 0 && focusTime.seconds === 0;
 
-export default StopButton
+    const handleClick = () => {
+        if (isTimerRunning || timerPaused) {
+            cancelFocusMode();
+        } else if (isFocusTimeZero && mode === 'focus') {
+            setMode('break');
+            setFocusTime({ minutes: 25, seconds: 0 });
+            startTimer();
+        } else {
+            setMode(mode === 'focus' ? 'break' : 'focus');
+        }
+    };
+
+	let buttonText;
+    if (isFocusCompleted) {
+        buttonText = 'DONE';
+    } else if (isTimerRunning || timerPaused) {
+        buttonText = 'CANCEL';
+    } else if (mode === 'focus') {
+        buttonText = 'TAKE A BREAK';
+    } else {
+        buttonText = 'FOCUS';
+    }
+
+    return <StyledButton onClick={handleClick}>{buttonText}</StyledButton>;
+};
+
+export default StopButton;

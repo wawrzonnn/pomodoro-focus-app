@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {
 	orbitAnimation1,
@@ -9,6 +9,8 @@ import {
 } from '../animations/animations'
 import { Plus } from '../assets/icons/Plus'
 import { Minus } from '../assets/icons/Minus'
+import { TimerState } from '../store/types'
+import { useStore } from '../store/store'
 
 interface CircleProps {
 	top: string
@@ -17,19 +19,14 @@ interface CircleProps {
 	animation: any
 }
 
-interface TimerState {
-    minutes: number;
-    seconds: number;
-}
-
 const TimerContainer = styled.div`
-	margin-top: 150px;
+	margin-top: 160px;
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
 	gap: 15px;
+	min-height: 133px;
 `
 
 const TimeDisplay = styled.span`
@@ -46,6 +43,19 @@ const TimeDisplay = styled.span`
 const ButtonsContainer = styled.div`
 	display: flex;
 	gap: 15px;
+`
+
+const Overtime = styled.div`
+	color: var(--Beige, #fef2e7);
+	text-align: center;
+	font-family: Roboto;
+	font-size: 30px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: 40px; /* 133.333% */
+	letter-spacing: 3px;
+    position: absolute;
+    top: 70px;
 `
 
 const TimerButton = styled.button`
@@ -77,57 +87,56 @@ const Circle = styled.div<CircleProps>`
 `
 
 const Timer = () => {
-	const [mode, setMode] = useState('focus')
-    const [focusTime, setFocusTime] = useState<TimerState>({ minutes: 25, seconds: 0 });
-    const [breakTime, setBreakTime] = useState<TimerState>({ minutes: 5, seconds: 0 });
-
+	const { mode, focusTime, breakTime, setFocusTime, setBreakTime, isTimerRunning, timerPaused, overtime, isFocusCompleted } = useStore()
 
 	const handleDecrease = () => {
 		if (mode === 'focus') {
-			setFocusTime(prev => ({
-				...prev,
-				minutes: Math.max(prev.minutes - 5, 5),
-			}))
-		} else if (mode === 'break') {
-			setBreakTime(prev => ({
-				...prev,
-				minutes: Math.max(prev.minutes - 5, 5),
-			}))
+			setFocusTime({ ...focusTime, minutes: Math.max(focusTime.minutes - 5, 5) })
+		} else {
+			setBreakTime({ ...breakTime, minutes: Math.max(breakTime.minutes - 5, 5) })
 		}
 	}
 
 	const handleIncrease = () => {
 		if (mode === 'focus') {
-			setFocusTime(prev => ({ ...prev, minutes: prev.minutes + 5 }))
-		} else if (mode === 'break') {
-			setBreakTime(prev => ({ ...prev, minutes: prev.minutes + 5 }))
+			setFocusTime({ ...focusTime, minutes: focusTime.minutes + 5 })
+		} else {
+			setBreakTime({ ...breakTime, minutes: breakTime.minutes + 5 })
 		}
 	}
 
-    const formatTime = ({ minutes, seconds }: TimerState) => {
-        const formattedMinutes = minutes.toString().padStart(2, '0');
-        const formattedSeconds = seconds.toString().padStart(2, '0');
-        return `${formattedMinutes}:${formattedSeconds}`;
-    };
+	const formatTime = ({ minutes, seconds }: TimerState) => {
+		const formattedMinutes = minutes.toString().padStart(2, '0')
+		const formattedSeconds = seconds.toString().padStart(2, '0')
+		return `${formattedMinutes}:${formattedSeconds}`
+	}
 
-    const currentTimerValue = mode === 'focus' ? focusTime : breakTime;
+	const currentTimerValue = mode === 'focus' ? focusTime : breakTime
+
+	const isFocusTimeZero = focusTime.minutes === 0 && focusTime.seconds === 0
+	const formattedOvertime = isFocusTimeZero ? `+${formatTime(overtime)}` : ''
 
 	return (
 		<TimerContainer>
 			<TimeDisplay>{formatTime(currentTimerValue)}</TimeDisplay>
-			<ButtonsContainer>
-				<TimerButton onClick={handleDecrease}>
-					<Minus />
-				</TimerButton>
-				<TimerButton onClick={handleIncrease}>
-					<Plus />
-				</TimerButton>
-			</ButtonsContainer>
-			<Circle animation={orbitAnimation1} top='-110px' left='-130px' opacity={0.8} />
-			<Circle animation={orbitAnimation2} top='-120px' left='-120px' opacity={0.4} />
-			<Circle animation={orbitAnimation3} top='-115px' left='-110px' opacity={0.2} />
-			<Circle animation={orbitAnimation4} top='-125px' left='-115px' opacity={1} />
-			<Circle animation={orbitAnimation5} top='-105px' left='-105px' opacity={0.6} />
+			{!isTimerRunning && !timerPaused && (
+				<ButtonsContainer>
+					<TimerButton onClick={handleDecrease}>
+						<Minus />
+					</TimerButton>
+					<TimerButton onClick={handleIncrease}>
+						<Plus />
+					</TimerButton>
+				</ButtonsContainer>
+			)}
+			{ mode === 'focus' && isFocusCompleted && 
+            <Overtime>{formattedOvertime}</Overtime>
+            }
+			<Circle animation={isTimerRunning ? orbitAnimation1 : ''} top='-105px' left='-150px' opacity={0.8} />
+			<Circle animation={isTimerRunning ? orbitAnimation2 : ''} top='-125px' left='-170px' opacity={0.4} />
+			<Circle animation={isTimerRunning ? orbitAnimation3 : ''} top='-115px' left='-70px' opacity={0.2} />
+			<Circle animation={isTimerRunning ? orbitAnimation4 : ''} top='-130px' left='-100px' opacity={1} />
+			<Circle animation={isTimerRunning ? orbitAnimation5 : ''} top='-95px' left='-105px' opacity={0.6} />
 		</TimerContainer>
 	)
 }
