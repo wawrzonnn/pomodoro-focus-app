@@ -16,8 +16,9 @@ export interface StoreState {
     setovertime: (time: TimerState) => void;
     startTimer: () => void;
     pauseTimer: () => void;
+    cancelActiveMode:  (newMode: 'focus' | 'break') => void;
+    returnToHomeScreen: (newMode: 'focus' | 'break') => void;
     timerPaused: boolean;
-    cancelFocusMode: () => void;
-    returnToHomeScreen: () => void;
-    isFocusCompleted: boolean
+    isFocusCompleted: boolean;
+    isBreakCompleted: boolean;
 }
