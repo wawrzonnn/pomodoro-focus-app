@@ -29,8 +29,8 @@ function App() {
 		<Container>
 			<Header />
 			<Timer />
-			<StartButton text='START FOCUS' />
-			<StopButton text='TAKE A BREAK' />
+			<StartButton />
+			<StopButton />
 			<Separator />
 			<LogsButton text='Show logs' />
 		</Container>
