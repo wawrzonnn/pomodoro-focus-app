@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { useStore } from '../store/store'
 const StyledSpan = styled.span`
   color: var(--Beige, #FEF2E7);
   text-align: center;
@@ -33,10 +33,21 @@ margin-top: 30px;
 gap: 4px;`
 
 export const Header = () => {
+  const { mode, isTimerRunning, timerPaused } = useStore()
+
+  let headerText = 'POMODORO FOCUS';
+  if (isTimerRunning || timerPaused) {
+    headerText = mode === 'focus' ? 'FOCUS' : 'BREAK';
+  }
+
+  let spanText = '– Get the work done –';
+  if (isTimerRunning && mode === 'break') {
+    spanText = '– RECHARGING –'
+  }
   return (
     <StyledHeader>
-      <StyledSpan>– Get the work done –</StyledSpan>
-      <StyledH1>POMODORO FOCUS</StyledH1>
+      <StyledSpan>{spanText}</StyledSpan>
+      <StyledH1>{headerText}</StyledH1>
     </StyledHeader>
   );
 }

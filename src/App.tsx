@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import Header from './components/Header'
 import Timer from './components/Timer'
-import StartButton from './components/Buttons/StartButton'
-import StopButton from './components/Buttons/StopButton'
-import LogsButton from './components/Buttons/LogsButton'
+import StartButton from './components/StartButton'
+import StopButton from './components/StopButton'
+import LogsButton from './components/Logs'
 
 const Container = styled.div`
 	width: 390px;
@@ -32,7 +32,7 @@ function App() {
 			<StartButton />
 			<StopButton />
 			<Separator />
-			<LogsButton text='Show logs' />
+			<LogsButton/>
 		</Container>
 	)
 }

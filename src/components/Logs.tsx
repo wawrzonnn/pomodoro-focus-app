@@ -1,10 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-interface LogsButtonProps {
-	text: string
-}
-
 const StyledButton = styled.button`
 	margin-top: 20px;
 	color: var(--Beige, #fef2e7);
@@ -21,8 +17,8 @@ const StyledButton = styled.button`
     padding-bottom: 20px;
 `
 
-export const LogsButton = ({ text }: LogsButtonProps) => {
-	return <StyledButton>{text}</StyledButton>
+export const LogsButton = () => {
+	return <StyledButton>Show logs</StyledButton>
 }
 
 export default LogsButton

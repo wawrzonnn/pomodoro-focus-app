@@ -54,8 +54,8 @@ const Overtime = styled.div`
 	font-weight: 300;
 	line-height: 40px; /* 133.333% */
 	letter-spacing: 3px;
-    position: absolute;
-    top: 70px;
+	position: absolute;
+	top: 70px;
 `
 
 const TimerButton = styled.button`
@@ -87,13 +87,23 @@ const Circle = styled.div<CircleProps>`
 `
 
 const Timer = () => {
-	const { mode, focusTime, breakTime, setFocusTime, setBreakTime, isTimerRunning, timerPaused, overtime, isFocusCompleted } = useStore()
+	const {
+		mode,
+		focusTime,
+		breakTime,
+		setFocusTime,
+		setBreakTime,
+		isTimerRunning,
+		timerPaused,
+		overtime,
+		isFocusCompleted,
+	} = useStore()
 
 	const handleDecrease = () => {
 		if (mode === 'focus') {
-			setFocusTime({ ...focusTime, minutes: Math.max(focusTime.minutes - 5, 5) })
+			setFocusTime({ ...focusTime, minutes: focusTime.minutes - 4 })
 		} else {
-			setBreakTime({ ...breakTime, minutes: Math.max(breakTime.minutes - 5, 5) })
+			setBreakTime({ ...breakTime, minutes: breakTime.minutes - 4 })
 		}
 	}
 
@@ -129,9 +139,7 @@ const Timer = () => {
 					</TimerButton>
 				</ButtonsContainer>
 			)}
-			{ mode === 'focus' && isFocusCompleted && 
-            <Overtime>{formattedOvertime}</Overtime>
-            }
+			{mode === 'focus' && isFocusCompleted && <Overtime>{formattedOvertime}</Overtime>}
 			<Circle animation={isTimerRunning ? orbitAnimation1 : ''} top='-105px' left='-150px' opacity={0.8} />
 			<Circle animation={isTimerRunning ? orbitAnimation2 : ''} top='-125px' left='-170px' opacity={0.4} />
 			<Circle animation={isTimerRunning ? orbitAnimation3 : ''} top='-115px' left='-70px' opacity={0.2} />
