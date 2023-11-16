@@ -18,5 +18,6 @@ export interface StoreState {
     pauseTimer: () => void;
     timerPaused: boolean;
     cancelFocusMode: () => void;
+    returnToHomeScreen: () => void;
     isFocusCompleted: boolean
 }

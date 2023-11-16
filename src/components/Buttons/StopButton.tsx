@@ -20,16 +20,15 @@ const StyledButton = styled.button`
 `
 
 export const StopButton = () => {
-    const { isTimerRunning, timerPaused, mode, setMode, cancelFocusMode, focusTime, setFocusTime, startTimer, isFocusCompleted } = useStore();
-    const isFocusTimeZero = focusTime.minutes === 0 && focusTime.seconds === 0;
+    const { isTimerRunning, timerPaused, mode, setMode, cancelFocusMode, focusTime, setFocusTime, startTimer, isFocusCompleted, returnToHomeScreen } = useStore();
+
 
     const handleClick = () => {
         if (isTimerRunning || timerPaused) {
             cancelFocusMode();
-        } else if (isFocusTimeZero && mode === 'focus') {
-            setMode('break');
-            setFocusTime({ minutes: 25, seconds: 0 });
-            startTimer();
+        } else if (isFocusCompleted && mode === 'focus') {
+            // Logika dla kliknięcia na 'DONE'
+            returnToHomeScreen();
         } else {
             setMode(mode === 'focus' ? 'break' : 'focus');
         }

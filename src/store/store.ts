@@ -79,7 +79,21 @@ export const useStore = create<StoreState>((set, get) => ({
         if (interval) clearInterval(interval);
         set({ isTimerRunning: false, timerInterval: null, timerPaused: false, focusTime: { minutes: 25, seconds: 0 }, breakTime: { minutes: 5, seconds: 0 }, overtime: { minutes: 0, seconds: 0 }, mode: 'break', isFocusCompleted: false});
     },
+    returnToHomeScreen: () => {
+        const interval = get().timerInterval;
+        if (interval) clearInterval(interval);
 
+        set({
+            isTimerRunning: false,
+            timerInterval: null,
+            timerPaused: false,
+            focusTime: { minutes: 25, seconds: 0 },
+            breakTime: { minutes: 5, seconds: 0 },
+            overtime: { minutes: 0, seconds: 0 },
+            mode: 'break',
+            isFocusCompleted: false
+        });
+    },
 }));
 
 export default useStore;
