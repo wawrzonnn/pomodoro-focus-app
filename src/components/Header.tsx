@@ -33,15 +33,15 @@ margin-top: 30px;
 gap: 4px;`
 
 export const Header = () => {
-  const { mode, isTimerRunning, timerPaused } = useStore()
+  const { mode, isTimerRunning, isTimerPaused } = useStore()
 
   let headerText = 'POMODORO FOCUS';
-  if (isTimerRunning || timerPaused) {
+  if (isTimerRunning || isTimerPaused) {
     headerText = mode === 'focus' ? 'FOCUS' : 'BREAK';
   }
 
   let spanText = '– Get the work done –';
-  if (isTimerRunning && mode === 'break') {
+  if ((isTimerRunning && mode === 'break') || (isTimerPaused && mode === 'break')) {
     spanText = '– RECHARGING –'
   }
   return (

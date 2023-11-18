@@ -26,10 +26,11 @@ const TimerContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	gap: 15px;
-	min-height: 133px;
+	min-height: 158px;
 `
 
 const TimeDisplay = styled.span`
+margin-top: 25px;
 	color: var(--Beige, #fef2e7);
 	text-align: center;
 	font-family: Roboto;
@@ -94,24 +95,34 @@ const Timer = () => {
 		setFocusTime,
 		setBreakTime,
 		isTimerRunning,
-		timerPaused,
+		isTimerPaused,
 		overtime,
 		isFocusCompleted,
+		setInitialFocusTime,
+		initialFocusTime,
+		setInitialBreakTime,
+		initialBreakTime,
+		isBreakCompleted,
+		isOvertimeRunning,
 	} = useStore()
 
 	const handleDecrease = () => {
 		if (mode === 'focus') {
-			setFocusTime({ ...focusTime, minutes: focusTime.minutes - 4 })
+			setFocusTime({ ...focusTime, minutes: Math.max(focusTime.minutes - 5, 5) })
+			setInitialFocusTime({ ...initialFocusTime, minutes: Math.max(initialFocusTime.minutes - 5, 5) })
 		} else {
-			setBreakTime({ ...breakTime, minutes: breakTime.minutes - 4 })
+			setBreakTime({ ...breakTime, minutes: Math.max(breakTime.minutes - 5, 5) })
+			setInitialBreakTime({ ...initialBreakTime, minutes: Math.max(initialBreakTime.minutes - 5, 5) })
 		}
 	}
 
 	const handleIncrease = () => {
 		if (mode === 'focus') {
 			setFocusTime({ ...focusTime, minutes: focusTime.minutes + 5 })
+			setInitialFocusTime({ ...initialFocusTime, minutes: initialFocusTime.minutes + 5 })
 		} else {
 			setBreakTime({ ...breakTime, minutes: breakTime.minutes + 5 })
+			setInitialBreakTime({ ...initialBreakTime, minutes: initialBreakTime.minutes + 5 })
 		}
 	}
 
@@ -123,13 +134,18 @@ const Timer = () => {
 
 	const currentTimerValue = mode === 'focus' ? focusTime : breakTime
 
-	const isFocusTimeZero = focusTime.minutes === 0 && focusTime.seconds === 0
-	const formattedOvertime = isFocusTimeZero ? `+${formatTime(overtime)}` : ''
+	const formattedOvertime = `+${formatTime(overtime)}`
+
+	const showButtonsContainer =
+		!isTimerRunning &&
+		!isTimerPaused &&
+		!(isFocusCompleted && mode === 'focus') &&
+		!(isBreakCompleted && mode === 'break')
 
 	return (
 		<TimerContainer>
 			<TimeDisplay>{formatTime(currentTimerValue)}</TimeDisplay>
-			{!isTimerRunning && !timerPaused && (
+			{showButtonsContainer && (
 				<ButtonsContainer>
 					<TimerButton onClick={handleDecrease}>
 						<Minus />
@@ -139,7 +155,7 @@ const Timer = () => {
 					</TimerButton>
 				</ButtonsContainer>
 			)}
-			{mode === 'focus' && isFocusCompleted && <Overtime>{formattedOvertime}</Overtime>}
+{isOvertimeRunning && <Overtime>{formattedOvertime}</Overtime>}
 			<Circle animation={isTimerRunning ? orbitAnimation1 : ''} top='-105px' left='-150px' opacity={0.8} />
 			<Circle animation={isTimerRunning ? orbitAnimation2 : ''} top='-125px' left='-170px' opacity={0.4} />
 			<Circle animation={isTimerRunning ? orbitAnimation3 : ''} top='-115px' left='-70px' opacity={0.2} />
