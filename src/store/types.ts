@@ -12,6 +12,7 @@ export interface Log {
   mode: PomodoroMode
   time: number
   createdAt: Date
+  startTime: Date
 }
 
 export interface StoreState {

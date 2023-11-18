@@ -49,6 +49,7 @@ export const useStore = create<StoreState>((set, get) => ({
               mode: PomodoroMode.FOCUS,
               time: initialFocusTime.minutes * 60 + initialFocusTime.seconds,
               createdAt: new Date(),
+			  startTime: new Date()
             }
             saveLog(newLog)
           }
@@ -76,6 +77,7 @@ export const useStore = create<StoreState>((set, get) => ({
               mode: PomodoroMode.BREAK,
               time: initialBreakTime.minutes * 60 + initialBreakTime.seconds,
               createdAt: new Date(),
+			  startTime: new Date()
             }
             saveLog(newLog)
           }
@@ -124,6 +126,8 @@ export const useStore = create<StoreState>((set, get) => ({
       mode: newMode,
       isFocusCompleted: false,
       isBreakCompleted: false,
+	  isOvertimeRunning: false, 
+	  overtime: { minutes: 0, seconds: 0 },
     })
   },
 
@@ -174,6 +178,7 @@ export const useStore = create<StoreState>((set, get) => ({
     const logs = JSON.parse(localStorage.getItem('logs') || '[]')
     logs.push(log)
     localStorage.setItem('logs', JSON.stringify(logs))
+	console.log(log);
   },
 }))
 
