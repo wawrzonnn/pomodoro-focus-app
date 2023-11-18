@@ -17,3 +17,7 @@ Pomodoro Focus App is a simple application that helps you to stay focused on you
 - After the working session is over, the user can see a timer of 5 minutes - the break session
 - After the break session is over, the user starts a new working session
 - The user can start / pause, stop and reset the timers
+
+### Deployment 🚀
+
+You can find a live demo of this project <a href="https://pomodoro-focus-app.vercel.app/">here</a>.
