@@ -8,6 +8,7 @@
     "dev:network": "vite --host 192.168.33.4",
     "build": "vite build",
     "lint": "prettier --write . && eslint src --ext .js,.jsx,.ts,.tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write .",
     "preview": "vite preview"
   },
   "dependencies": {
