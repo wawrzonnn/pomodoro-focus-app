@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { StoreState, Log } from './types'
+import { StoreState, Log, PomodoroMode } from './types'
 
 export const useStore = create<StoreState>((set, get) => ({
 	mode: 'focus',
@@ -46,7 +46,7 @@ export const useStore = create<StoreState>((set, get) => ({
 					if (!isFocusCompleted) {
 						//CREATING AND SAVING COMPLETED FOCUS LOG
 						const newLog: Log = {
-							mode: mode,
+							mode: PomodoroMode.FOCUS,
 							time: initialFocusTime.minutes * 60 + initialFocusTime.seconds,
 							createdAt: new Date(),
 						}
@@ -72,7 +72,7 @@ export const useStore = create<StoreState>((set, get) => ({
 					if (!isBreakCompleted) {
 						//CREATING AND SAVING COMPLETED BREAK LOG
 						const newLog: Log = {
-							mode: mode,
+							mode: PomodoroMode.BREAK,
 							time: initialBreakTime.minutes * 60 + initialBreakTime.seconds,
 							createdAt: new Date(),
 						}
@@ -171,7 +171,7 @@ export const useStore = create<StoreState>((set, get) => ({
 		const logs = JSON.parse(localStorage.getItem('logs') || '[]') //NERDY HERE
 		logs.push(log) //NERDY HERE
 		localStorage.setItem('logs', JSON.stringify(logs)) //NERDY HERE
-		console.log('saved log:', log) //NERDY HERE
+		console.log('saved log:', log) 
 	}, 
 }))
 
