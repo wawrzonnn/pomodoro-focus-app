@@ -4,7 +4,7 @@ export interface TimerState {
 }
 
 export interface Log {
-	mode: 'BREAK' | 'FOCUS'
+	mode: 'focus' | 'break'
 	time: number
 	createdAt: Date
 }
