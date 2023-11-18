@@ -4,10 +4,11 @@ import Header from './components/Header'
 import Timer from './components/Timer'
 import StartButton from './components/StartButton'
 import StopButton from './components/StopButton'
-import LogsButton from './components/Logs'
+import LogsButton, { Logs } from './components/Logs'
 import { useStore } from './store/store'
 const Container = styled.div`
-  width: 390px;
+  min-width: 390px;
+  width: 100%;
   height: 100%;
   margin: 0 auto;
   overflow-y: scroll;
@@ -17,6 +18,8 @@ const Container = styled.div`
   align-items: center;
   overflow-x: hidden;
   position: relative;
+  padding: 0 20px;
+  margin-bottom: 20px;
 `
 const Separator = styled.div`
   margin-top: 48px;
@@ -25,39 +28,39 @@ const Separator = styled.div`
   background: #fef2e7;
 `
 
-const Divek = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-`
+// const Divek = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   display: flex;
+//   flex-direction: column;
+// `
 
 function App() {
   const { setFocusTime, setBreakTime } = useStore()
 
-  const test1 = () => {
-    setFocusTime({ minutes: 0, seconds: 3 })
-  }
-  const test2 = () => {
-    setBreakTime({ minutes: 0, seconds: 3 })
-  }
+  // const test1 = () => {
+  //   setFocusTime({ minutes: 0, seconds: 3 })
+  // }
+  // const test2 = () => {
+  //   setBreakTime({ minutes: 0, seconds: 3 })
+  // }
   return (
     <Container>
-      <Divek>
+      {/* <Divek>
         <button onClick={test1} style={{ zIndex: 999, position: 'relative' }}>
           Focus
         </button>
         <button onClick={test2} style={{ zIndex: 999, position: 'relative' }}>
           Break
         </button>
-      </Divek>
+      </Divek> */}
       <Header />
       <Timer />
       <StartButton />
       <StopButton />
       <Separator />
-      <LogsButton />
+      <Logs />
     </Container>
   )
 }

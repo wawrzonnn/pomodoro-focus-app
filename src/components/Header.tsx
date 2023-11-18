@@ -34,17 +34,17 @@ const StyledHeader = styled.header`
 `
 
 export const Header = () => {
-  const { mode, isTimerRunning, isTimerPaused } = useStore()
+  const { mode, isTimerRunning, isTimerPaused, isBreakCompleted, isFocusCompleted } = useStore()
 
   let headerText = 'POMODORO FOCUS'
-  if (isTimerRunning || isTimerPaused) {
+  if (isTimerRunning || isTimerPaused || isBreakCompleted || isFocusCompleted) {
     headerText = mode === 'focus' ? 'FOCUS' : 'BREAK'
   }
 
   let spanText = '– Get the work done –'
   if (
     (isTimerRunning && mode === 'break') ||
-    (isTimerPaused && mode === 'break')
+    (isTimerPaused && mode === 'break') || (isBreakCompleted  && mode === 'break')
   ) {
     spanText = '– RECHARGING –'
   }
