@@ -180,6 +180,32 @@ export const useStore = create<StoreState>((set, get) => ({
     localStorage.setItem('logs', JSON.stringify(logs))
 	console.log(log);
   },
+
+  addFakeLogs: () => {
+    const fakeLogs = [];
+    const currentDate = new Date();
+  
+    for (let i = 0; i < 5; i++) {
+      const daysToSubtract = Math.floor(Math.random() * 7);
+  
+      const logDate = new Date(currentDate);
+      logDate.setDate(logDate.getDate() - daysToSubtract);
+  
+      fakeLogs.push({
+        mode: i % 2 === 0 ? PomodoroMode.FOCUS : PomodoroMode.BREAK,
+        time: i % 2 === 0 ? 1500 : 300,
+        createdAt: logDate,
+        startTime: logDate
+      });
+    }
+  
+    const updatedLogs = [...get().logs, ...fakeLogs];
+    localStorage.setItem('logs', JSON.stringify(updatedLogs));
+    set({ logs: updatedLogs });
+  },
+  logs: JSON.parse(localStorage.getItem('logs') || '[]'),
+
+  setLogs: (newLogs: any) => set({ logs: newLogs }),
 }))
 
 export default useStore
