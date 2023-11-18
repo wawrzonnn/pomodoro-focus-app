@@ -169,13 +169,11 @@ export const useStore = create<StoreState>((set, get) => ({
       timerInterval: null,
     })
   },
-  //NERDY HERE
+
   saveLog: (log: Log) => {
-    //NERDY HERE
-    const logs = JSON.parse(localStorage.getItem('logs') || '[]') //NERDY HERE
-    logs.push(log) //NERDY HERE
-    localStorage.setItem('logs', JSON.stringify(logs)) //NERDY HERE
-    console.log('saved log:', log)
+    const logs = JSON.parse(localStorage.getItem('logs') || '[]')
+    logs.push(log)
+    localStorage.setItem('logs', JSON.stringify(logs))
   },
 }))
 
