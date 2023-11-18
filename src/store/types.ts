@@ -3,8 +3,13 @@ export interface TimerState {
 	seconds: number
 }
 
+export enum PomodoroMode {
+	BREAK = "BREAK",
+	FOCUS = "FOCUS"
+   }
+
 export interface Log {
-	mode: 'BREAK' | 'FOCUS'
+	mode: PomodoroMode
 	time: number
 	createdAt: Date
 }

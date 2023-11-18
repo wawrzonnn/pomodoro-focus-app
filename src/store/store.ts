@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { StoreState, Log } from './types'
+import { StoreState, Log, PomodoroMode } from './types'
 
 export const useStore = create<StoreState>((set, get) => ({
 	mode: 'focus',
@@ -30,10 +30,28 @@ export const useStore = create<StoreState>((set, get) => ({
 	startTimer: () => {
 		if (get().isTimerRunning) return
 		const interval = setInterval(() => {
-			const { focusTime, breakTime, mode, initialBreakTime, initialFocusTime, startOvertime, isOvertimeRunning } = get()
+			const {
+				focusTime,
+				breakTime,
+				mode,
+				initialBreakTime,
+				initialFocusTime,
+				isBreakCompleted,
+				isFocusCompleted,
+				saveLog,
+			} = get()
 			if (mode === 'focus') {
 				// FOCUS LOGIC
 				if (focusTime.minutes === 0 && focusTime.seconds === 0) {
+					if (!isFocusCompleted) {
+						//CREATING AND SAVING COMPLETED FOCUS LOG
+						const newLog: Log = {
+							mode: PomodoroMode.FOCUS,
+							time: initialFocusTime.minutes * 60 + initialFocusTime.seconds,
+							createdAt: new Date(),
+						}
+						saveLog(newLog)
+					}
 					clearInterval(interval)
 					set({
 						isOvertimeRunning: true,
@@ -42,7 +60,7 @@ export const useStore = create<StoreState>((set, get) => ({
 						isBreakCompleted: false,
 						breakTime: initialBreakTime,
 					})
-					get().startOvertime();
+					get().startOvertime()
 				} else {
 					let newMinutes = focusTime.seconds === 0 ? focusTime.minutes - 1 : focusTime.minutes
 					let newSeconds = focusTime.seconds === 0 ? 59 : focusTime.seconds - 1
@@ -51,6 +69,15 @@ export const useStore = create<StoreState>((set, get) => ({
 			} else {
 				// if mode === 'break' BREAK LOGIC
 				if (breakTime.minutes === 0 && breakTime.seconds === 0) {
+					if (!isBreakCompleted) {
+						//CREATING AND SAVING COMPLETED BREAK LOG
+						const newLog: Log = {
+							mode: PomodoroMode.BREAK,
+							time: initialBreakTime.minutes * 60 + initialBreakTime.seconds,
+							createdAt: new Date(),
+						}
+						saveLog(newLog)
+					}
 					clearInterval(interval)
 					set({
 						isTimerRunning: false,
@@ -73,7 +100,13 @@ export const useStore = create<StoreState>((set, get) => ({
 		if (interval) {
 			clearInterval(interval)
 		}
-		set({ isTimerRunning: false, timerInterval: null, isTimerPaused: true, isOvertimeRunning: false, overtime: { minutes: 0, seconds: 0 } })
+		set({
+			isTimerRunning: false,
+			timerInterval: null,
+			isTimerPaused: true,
+			isOvertimeRunning: false,
+			overtime: { minutes: 0, seconds: 0 },
+		})
 	},
 
 	returnToHomeScreen: (newMode: 'focus' | 'break') => {
@@ -108,38 +141,38 @@ export const useStore = create<StoreState>((set, get) => ({
 	},
 
 	startOvertime: () => {
-		const isOver = get().isOvertimeRunning;
-	
+		const isOver = get().isOvertimeRunning
+
 		if (isOver) {
 			const interval = setInterval(() => {
-				let { overtime } = get();
-				let newSeconds = overtime.seconds === 59 ? 0 : overtime.seconds + 1;
-				let newMinutes = overtime.seconds === 59 ? overtime.minutes + 1 : overtime.minutes;
-	
-				set({ overtime: { minutes: newMinutes, seconds: newSeconds } });
-			}, 1000);
-	
-			set({ timerInterval: interval });
+				let { overtime } = get()
+				let newSeconds = overtime.seconds === 59 ? 0 : overtime.seconds + 1
+				let newMinutes = overtime.seconds === 59 ? overtime.minutes + 1 : overtime.minutes
+
+				set({ overtime: { minutes: newMinutes, seconds: newSeconds } })
+			}, 1000)
+
+			set({ timerInterval: interval })
 		}
 	},
 
 	stopOvertime: () => {
-		const interval = get().timerInterval;
-		if (interval) clearInterval(interval);
-	
+		const interval = get().timerInterval
+		if (interval) clearInterval(interval)
+
 		set({
 			isOvertimeRunning: false,
 			overtime: { minutes: 0, seconds: 0 },
-			timerInterval: null
-		});
+			timerInterval: null,
+		})
 	},
-
-	saveLog: (log: Log) => {
-		const logs = JSON.parse(localStorage.getItem('logs') || '[]')
-		logs.push(log)
-		localStorage.setItem('logs', JSON.stringify(logs))
-		console.log('saved log:', log)
-	},
+//NERDY HERE
+	saveLog: (log: Log) => { //NERDY HERE
+		const logs = JSON.parse(localStorage.getItem('logs') || '[]') //NERDY HERE
+		logs.push(log) //NERDY HERE
+		localStorage.setItem('logs', JSON.stringify(logs)) //NERDY HERE
+		console.log('saved log:', log) 
+	}, 
 }))
 
 export default useStore

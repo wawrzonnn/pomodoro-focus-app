@@ -56,7 +56,7 @@ const Overtime = styled.div`
 	line-height: 40px; /* 133.333% */
 	letter-spacing: 3px;
 	position: absolute;
-	top: 70px;
+	top: 100px;
 `
 
 const TimerButton = styled.button`
@@ -134,7 +134,7 @@ const Timer = () => {
 
 	const currentTimerValue = mode === 'focus' ? focusTime : breakTime
 
-	const formattedOvertime = `+${formatTime(overtime)}`
+	const formattedOvertime = `+ ${formatTime(overtime)}`
 
 	const showButtonsContainer =
 		!isTimerRunning &&
