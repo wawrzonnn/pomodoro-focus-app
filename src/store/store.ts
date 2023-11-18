@@ -30,10 +30,19 @@ export const useStore = create<StoreState>((set, get) => ({
 	startTimer: () => {
 		if (get().isTimerRunning) return
 		const interval = setInterval(() => {
-			const { focusTime, breakTime, mode, initialBreakTime, initialFocusTime, startOvertime, isOvertimeRunning } = get()
+			const { focusTime, breakTime, mode, initialBreakTime, initialFocusTime, isBreakCompleted, isFocusCompleted, saveLog } = get()
 			if (mode === 'focus') {
 				// FOCUS LOGIC
 				if (focusTime.minutes === 0 && focusTime.seconds === 0) {
+					if (!isFocusCompleted) {
+						//CREATING AND SAVING COMPLETED FOCUS LOG
+						const newLog: Log = {
+							mode: "FOCUS",
+							time: initialFocusTime.minutes * 60 + initialFocusTime.seconds,
+							createdAt: new Date(),
+						};
+						saveLog(newLog);
+					}
 					clearInterval(interval)
 					set({
 						isOvertimeRunning: true,
@@ -51,6 +60,15 @@ export const useStore = create<StoreState>((set, get) => ({
 			} else {
 				// if mode === 'break' BREAK LOGIC
 				if (breakTime.minutes === 0 && breakTime.seconds === 0) {
+					if (!isBreakCompleted) {
+						//CREATING AND SAVING COMPLETED BREAK LOG
+						const newLog: Log = {
+							mode: "BREAK",
+							time: initialBreakTime.minutes * 60 + initialBreakTime.seconds,
+							createdAt: new Date(),
+						};
+						saveLog(newLog);
+					}
 					clearInterval(interval)
 					set({
 						isTimerRunning: false,
