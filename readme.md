@@ -8,8 +8,8 @@ Pomodoro Focus App is a simple application that helps you to stay focused on you
 
 ### How to start 🚀
 
-1. Install dependencies with ``npm install``
-2. Run ``npm run dev`` to start developing
+1. Install dependencies with `npm install`
+2. Run `npm run dev` to start developing
 
 ### 📝 Project requirements
 

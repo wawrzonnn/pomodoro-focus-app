@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 import { useStore } from '../store/store'
 const StyledSpan = styled.span`
-  color: var(--Beige, #FEF2E7);
+  color: var(--Beige, #fef2e7);
   text-align: center;
   font-family: Raleway;
   font-size: 12px;
@@ -11,10 +11,10 @@ const StyledSpan = styled.span`
   line-height: normal;
   letter-spacing: 2.4px;
   text-transform: uppercase;
-`;
+`
 
 const StyledH1 = styled.h1`
-  color: var(--Beige, #FEF2E7);
+  color: var(--Beige, #fef2e7);
   text-align: center;
   font-family: Raleway;
   font-size: 22px;
@@ -23,25 +23,29 @@ const StyledH1 = styled.h1`
   line-height: normal;
   letter-spacing: 0.66px;
   text-transform: uppercase;
-`;
+`
 
 const StyledHeader = styled.header`
-display: flex;
-flex-direction: column;
-justify-content: center;
-margin-top: 30px;
-gap: 4px;`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 4px;
+`
 
 export const Header = () => {
   const { mode, isTimerRunning, isTimerPaused } = useStore()
 
-  let headerText = 'POMODORO FOCUS';
+  let headerText = 'POMODORO FOCUS'
   if (isTimerRunning || isTimerPaused) {
-    headerText = mode === 'focus' ? 'FOCUS' : 'BREAK';
+    headerText = mode === 'focus' ? 'FOCUS' : 'BREAK'
   }
 
-  let spanText = '– Get the work done –';
-  if ((isTimerRunning && mode === 'break') || (isTimerPaused && mode === 'break')) {
+  let spanText = '– Get the work done –'
+  if (
+    (isTimerRunning && mode === 'break') ||
+    (isTimerPaused && mode === 'break')
+  ) {
     spanText = '– RECHARGING –'
   }
   return (
@@ -49,7 +53,7 @@ export const Header = () => {
       <StyledSpan>{spanText}</StyledSpan>
       <StyledH1>{headerText}</StyledH1>
     </StyledHeader>
-  );
+  )
 }
 
-export default Header;
+export default Header
