@@ -16,6 +16,7 @@ export interface Log {
 }
 
 export interface StoreState {
+  logs: any
   mode: 'focus' | 'break'
   setMode: (mode: 'focus' | 'break') => void
 
@@ -48,4 +49,5 @@ export interface StoreState {
   returnToHomeScreen: (newMode: 'focus' | 'break') => void
   startOvertime: () => void
   saveLog: (log: Log) => void
+  addFakeLogs: () => void
 }
