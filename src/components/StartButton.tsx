@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import useStore from '../store/store'
 
 const StyledButton = styled.button`
-	margin-top: 210px;
+	margin-top: 190px;
 	color: var(--Beige, #fef2e7);
 	text-align: center;
 	font-family: Raleway;
@@ -15,12 +15,13 @@ const StyledButton = styled.button`
 	background-color: transparent;
 	border: none;
 	outline: none;
+	cursor: pointer;
 `
 
 export const StartButton = () => {
 	const {
 		isTimerRunning,
-		timerPaused,
+		isTimerPaused,
 		startTimer,
 		pauseTimer,
 		setMode,
@@ -29,20 +30,23 @@ export const StartButton = () => {
 		breakTime,
 		isFocusCompleted,
 		isBreakCompleted,
+		stopOvertime
 	} = useStore()
 
 	const handleClick = () => {
-        if (isTimerRunning) {
-            pauseTimer();
-        } else {
-            if (isFocusCompleted && mode === 'focus') {
-                setMode('break');
-            } else if (isBreakCompleted && mode === 'break') {
-                setMode('focus');
-            }
-            startTimer();
-        }
-    };
+		if (isTimerRunning) {
+			pauseTimer()
+		} else {
+			if (isFocusCompleted && mode === 'focus') {
+				setMode('break')
+				stopOvertime()
+				startTimer()
+			} else if (isBreakCompleted && mode === 'break') {
+				setMode('focus')
+			}
+			startTimer()
+		}
+	}
 
 	let buttonText
 	if (isFocusCompleted && mode === 'focus') {
@@ -51,7 +55,7 @@ export const StartButton = () => {
 		buttonText = `FOCUS ${focusTime.minutes}:00`
 	} else if (isTimerRunning) {
 		buttonText = 'PAUSE'
-	} else if (timerPaused) {
+	} else if (isTimerPaused) {
 		buttonText = 'RESUME'
 	} else {
 		buttonText = mode === 'focus' ? 'START FOCUS' : 'START BREAK'

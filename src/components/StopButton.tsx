@@ -6,7 +6,6 @@ const StyledButton = styled.button`
 	margin-top: 25px;
 	color: var(--Beige, #fef2e7);
 	text-align: center;
-	/* Regular, 16 */
 	font-family: Raleway;
 	font-size: 16px;
 	font-style: normal;
@@ -16,12 +15,13 @@ const StyledButton = styled.button`
 	background-color: transparent;
 	border: none;
 	outline: none;
+	cursor: pointer;
 `
 
 export const StopButton = () => {
 	const {
 		isTimerRunning,
-		timerPaused,
+		isTimerPaused,
 		mode,
 		setMode,
 		isFocusCompleted,
@@ -31,7 +31,7 @@ export const StopButton = () => {
 	} = useStore()
 
 	const handleClick = () => {
-        if (isTimerRunning || timerPaused) {
+        if (isTimerRunning || isTimerPaused) {
             cancelActiveMode(mode === 'focus' ? 'break' : 'focus');
         } else if (isFocusCompleted && mode === 'focus') {
             returnToHomeScreen('break');
@@ -41,12 +41,12 @@ export const StopButton = () => {
             setMode(mode === 'focus' ? 'break' : 'focus');
         }
     };
-
+	
 	let buttonText = 'TAKE A BREAK'
-	if (isFocusCompleted || isBreakCompleted) {
-		buttonText = 'DONE'
-	} else if (isTimerRunning || timerPaused) {
+	if (isTimerRunning || isTimerPaused) {
 		buttonText = 'CANCEL'
+	} else if ((isFocusCompleted || isBreakCompleted) && !isTimerRunning) {
+		buttonText = 'DONE'
 	} else if (mode === 'focus') {
 		buttonText = 'TAKE A BREAK'
 	} else {

@@ -15,6 +15,7 @@ const StyledButton = styled.button`
 	border: none;
 	outline: none;
     padding-bottom: 20px;
+	cursor: pointer;
 `
 
 export const LogsButton = () => {
