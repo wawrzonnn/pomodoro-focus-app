@@ -1,7 +1,22 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import styled, { keyframes } from 'styled-components';
 import { useStore } from '../store/store'
-const StyledSpan = styled.span`
+
+const fadeIn = keyframes`
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+`;
+
+const fadeOut = keyframes`
+  from { opacity: 1; }
+  to { opacity: 0.5; }
+`;
+
+interface StyledTextProps {
+  show: boolean;
+}
+
+const StyledSpan = styled.span<StyledTextProps>`
   color: var(--Beige, #fef2e7);
   text-align: center;
   font-family: Raleway;
@@ -11,9 +26,11 @@ const StyledSpan = styled.span`
   line-height: normal;
   letter-spacing: 2.4px;
   text-transform: uppercase;
+  animation: ${props => props.show ? fadeIn : fadeOut} 0.3s ease-in-out;
+  animation-fill-mode: forwards;
 `
 
-const StyledH1 = styled.h1`
+const StyledH1 = styled.h1<StyledTextProps>`
   color: var(--Beige, #fef2e7);
   text-align: center;
   font-family: Raleway;
@@ -23,6 +40,8 @@ const StyledH1 = styled.h1`
   line-height: normal;
   letter-spacing: 0.66px;
   text-transform: uppercase;
+  animation: ${props => props.show ? fadeIn : fadeOut} 0.3s ease-in-out;
+  animation-fill-mode: forwards;
 `
 
 const StyledHeader = styled.header`
@@ -34,26 +53,43 @@ const StyledHeader = styled.header`
 `
 
 export const Header = () => {
-  const { mode, isTimerRunning, isTimerPaused, isBreakCompleted, isFocusCompleted } = useStore()
+  const { mode, isTimerRunning, isTimerPaused, isBreakCompleted, isFocusCompleted } = useStore();
 
-  let headerText = 'POMODORO FOCUS'
-  if (isTimerRunning || isTimerPaused || isBreakCompleted || isFocusCompleted) {
-    headerText = mode === 'focus' ? 'FOCUS' : 'BREAK'
-  }
+  const [headerText, setHeaderText] = useState('POMODORO FOCUS');
+  const [spanText, setSpanText] = useState('– Get the work done –');
+  const [showText, setShowText] = useState(true);
 
-  let spanText = '– Get the work done –'
-  if (
-    (isTimerRunning && mode === 'break') ||
-    (isTimerPaused && mode === 'break') || (isBreakCompleted  && mode === 'break')
-  ) {
-    spanText = '– RECHARGING –'
-  }
+  useEffect(() => {
+    let newHeaderText = 'POMODORO FOCUS';
+    let newSpanText = '– Get the work done –';
+    
+    if (isTimerRunning || isTimerPaused || isBreakCompleted || isFocusCompleted) {
+      newHeaderText = mode === 'focus' ? 'FOCUS' : 'BREAK';
+    }
+
+    if (
+      (isTimerRunning && mode === 'break') ||
+      (isTimerPaused && mode === 'break') || (isBreakCompleted && mode === 'break')
+    ) {
+      newSpanText = '– RECHARGING –';
+    }
+
+    if (newHeaderText !== headerText || newSpanText !== spanText) {
+      setShowText(false);
+      setTimeout(() => {
+        setHeaderText(newHeaderText);
+        setSpanText(newSpanText);
+        setShowText(true);
+      }, 200);
+    }
+  }, [isTimerRunning, isTimerPaused, mode, isFocusCompleted, isBreakCompleted, headerText, spanText]);
+
   return (
     <StyledHeader>
-      <StyledSpan>{spanText}</StyledSpan>
-      <StyledH1>{headerText}</StyledH1>
+      <StyledSpan show={showText}>{spanText}</StyledSpan>
+      <StyledH1 show={showText}>{headerText}</StyledH1>
     </StyledHeader>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

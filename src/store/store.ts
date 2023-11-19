@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { StoreState, Log, PomodoroMode } from './types'
+import { StoreState, Log, PomodoroMode } from '../types/types'
 
 export const useStore = create<StoreState>((set, get) => ({
   mode: 'focus',
@@ -49,7 +49,7 @@ export const useStore = create<StoreState>((set, get) => ({
               mode: PomodoroMode.FOCUS,
               time: initialFocusTime.minutes * 60 + initialFocusTime.seconds,
               createdAt: new Date(),
-			  startTime: new Date()
+              startTime: new Date(),
             }
             saveLog(newLog)
           }
@@ -77,7 +77,7 @@ export const useStore = create<StoreState>((set, get) => ({
               mode: PomodoroMode.BREAK,
               time: initialBreakTime.minutes * 60 + initialBreakTime.seconds,
               createdAt: new Date(),
-			  startTime: new Date()
+              startTime: new Date(),
             }
             saveLog(newLog)
           }
@@ -126,8 +126,8 @@ export const useStore = create<StoreState>((set, get) => ({
       mode: newMode,
       isFocusCompleted: false,
       isBreakCompleted: false,
-	  isOvertimeRunning: false, 
-	  overtime: { minutes: 0, seconds: 0 },
+      isOvertimeRunning: false,
+      overtime: { minutes: 0, seconds: 0 },
     })
   },
 
@@ -178,30 +178,30 @@ export const useStore = create<StoreState>((set, get) => ({
     const logs = JSON.parse(localStorage.getItem('logs') || '[]')
     logs.push(log)
     localStorage.setItem('logs', JSON.stringify(logs))
-	console.log(log);
+    console.log(log)
   },
 
   addFakeLogs: () => {
-    const fakeLogs = [];
-    const currentDate = new Date();
-  
+    const fakeLogs = []
+    const currentDate = new Date()
+
     for (let i = 0; i < 5; i++) {
-      const daysToSubtract = Math.floor(Math.random() * 7);
-  
-      const logDate = new Date(currentDate);
-      logDate.setDate(logDate.getDate() - daysToSubtract);
-  
+      const daysToSubtract = Math.floor(Math.random() * 7)
+
+      const logDate = new Date(currentDate)
+      logDate.setDate(logDate.getDate() - daysToSubtract)
+
       fakeLogs.push({
         mode: i % 2 === 0 ? PomodoroMode.FOCUS : PomodoroMode.BREAK,
         time: i % 2 === 0 ? 1500 : 300,
         createdAt: logDate,
-        startTime: logDate
-      });
+        startTime: logDate,
+      })
     }
-  
-    const updatedLogs = [...get().logs, ...fakeLogs];
-    localStorage.setItem('logs', JSON.stringify(updatedLogs));
-    set({ logs: updatedLogs });
+
+    const updatedLogs = [...get().logs, ...fakeLogs]
+    localStorage.setItem('logs', JSON.stringify(updatedLogs))
+    set({ logs: updatedLogs })
   },
   logs: JSON.parse(localStorage.getItem('logs') || '[]'),
 

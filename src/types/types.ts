@@ -51,3 +51,7 @@ export interface StoreState {
   saveLog: (log: Log) => void
   addFakeLogs: () => void
 }
+
+export interface StyledButtonProps {
+  show: boolean
+}
