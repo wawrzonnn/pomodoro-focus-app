@@ -24,6 +24,7 @@ const DevControlPanel = styled.div`
   z-index: 999;
   font-size: 12px;
   font-family: Roboto;
+  padding-top: 5px;
 `
 const DevControlPanelButton = styled.button`
   margin-top: 10px;
@@ -38,6 +39,7 @@ const DevControlPanelButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 5px;
 `
 
 const ButtonsWrapper = styled.div`
@@ -107,7 +109,7 @@ const DevControlPanelComponent = ({
       document.removeEventListener('mousedown', handleClickOutside)
       document.removeEventListener('touchstart', handleClickOutside)
     }
-  }, [])
+  }, [togglePanelVisibility, isPanelVisible])
 
   return (
     <>
