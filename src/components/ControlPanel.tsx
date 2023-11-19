@@ -26,6 +26,7 @@ const DevControlPanel = styled.div`
   font-family: Roboto;
 `
 const DevControlPanelButton = styled.button`
+  margin-top: 10px;
   width: 100%;
   border: none;
   background: black;
@@ -92,19 +93,21 @@ const DevControlPanelComponent = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
-        togglePanelVisibility(false);
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target as Node)
+      ) {
+        togglePanelVisibility(false)
       }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('touchstart', handleClickOutside);
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside)
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
-    };
-  }, []);
-  
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [])
 
   return (
     <>
