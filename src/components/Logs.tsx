@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { PomodoroMode } from '../store/types'
+import { PomodoroMode, StyledButtonProps } from '../types/types'
 import { groupLogsByDate, formatTime } from '../utils/formatLogsDate'
 import { ArrowRight } from '../assets/icons/ArrowRight'
 import { ArrowDown } from '../assets/icons/ArrowDown'
+import {
+  collapse,
+  expand,
+  fadeIn,
+  fadeOut,
+  slideIn,
+  slideOut,
+} from '../animations/logs'
 
-const ShowLogsButton = styled.button`
-  margin-top: 20px;
+const ShowLogsButton = styled.button<StyledButtonProps>`
+  margin-top: 15px;
   color: var(--Beige, #fef2e7);
   font-family: Raleway;
   font-size: 16px;
@@ -19,9 +27,11 @@ const ShowLogsButton = styled.button`
   outline: none;
   margin-bottom: 10px;
   cursor: pointer;
+  animation: ${(props) => (props.show ? fadeIn : fadeOut)} 0.6s ease-in-out;
+  animation-fill-mode: forwards;
 `
 
-const LogsContainer = styled.div`
+const LogsContainer = styled.div<{ show: boolean }>`
   background: #191b17;
   width: 100%;
   display: flex;
@@ -29,6 +39,10 @@ const LogsContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 5px;
+  transform-origin: top;
+  overflow: hidden;
+  animation: ${(props) => (props.show ? expand : collapse)} 0.7s ease-in-out;
+  animation-fill-mode: forwards;
 `
 const LogWrapper = styled.div`
   display: flex;
@@ -87,7 +101,7 @@ const Separator = styled.span`
   height: 20px;
   background: #fef2e7;
 `
-const LogEntry = styled.div`
+const LogEntry = styled.div<{ show: boolean }>`
   height: 40px;
   background: #0d0f0c;
   width: 350px;
@@ -97,6 +111,8 @@ const LogEntry = styled.div`
   align-items: center;
   border-top: 1px solid #000300;
   border-bottom: 1px solid #000300;
+  animation: ${(props) => (props.show ? slideIn : slideOut)} 0.3s ease-in-out;
+  animation-fill-mode: forwards;
 `
 
 const LogDetails = styled(BaseText)``
@@ -132,9 +148,11 @@ export const Logs = () => {
 
   return (
     <>
-      <ShowLogsButton onClick={toggleLogs}>{showLogs ? 'Hide' : 'Show'} logs</ShowLogsButton>
+      <ShowLogsButton show={showLogs} onClick={toggleLogs}>
+        {showLogs ? 'Hide' : 'Show'} logs
+      </ShowLogsButton>
       {showLogs && (
-        <LogsContainer>
+        <LogsContainer show={showLogs}>
           {Object.entries(groupedLogs).map(([date, data]) => (
             <LogWrapper key={date}>
               <DayContainer onClick={() => toggleDetails(date)}>
@@ -159,7 +177,7 @@ export const Logs = () => {
               </DayContainer>
               {showDetails[date] &&
                 data.logs.map((log, index: React.Key | null | undefined) => (
-                  <LogEntry key={index}>
+                  <LogEntry key={index} show={showDetails[date]}>
                     <LogDetails>
                       {formatTime(log.startTime, log.time)}{' '}
                     </LogDetails>

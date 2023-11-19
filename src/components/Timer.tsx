@@ -6,10 +6,10 @@ import {
   orbitAnimation3,
   orbitAnimation4,
   orbitAnimation5,
-} from '../animations/animations'
+} from '../animations/timerCircles'
 import { Plus } from '../assets/icons/Plus'
 import { Minus } from '../assets/icons/Minus'
-import { TimerState } from '../store/types'
+import { TimerState } from '../types/types'
 import { useStore } from '../store/store'
 
 interface CircleProps {
@@ -17,10 +17,11 @@ interface CircleProps {
   left: string
   opacity: number
   animation: any
+  isPaused: boolean
 }
 
 const TimerContainer = styled.div`
-  margin-top: 160px;
+  margin-top: 180px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -85,6 +86,7 @@ const Circle = styled.div<CircleProps>`
   top: ${(props) => props.top};
   left: ${(props) => props.left};
   animation: ${(props) => props.animation} 8000ms ease-in-out infinite;
+  animation-play-state: ${(props) => (props.isPaused ? 'paused' : 'running')};
 `
 
 const Timer = () => {
@@ -175,31 +177,36 @@ const Timer = () => {
       )}
       {isOvertimeRunning && <Overtime>{formattedOvertime}</Overtime>}
       <Circle
-        animation={isTimerRunning ? orbitAnimation1 : ''}
+        animation={orbitAnimation1}
+        isPaused={!isTimerRunning}
         top="-105px"
         left="-150px"
         opacity={0.8}
       />
       <Circle
-        animation={isTimerRunning ? orbitAnimation2 : ''}
+        animation={orbitAnimation2}
+        isPaused={!isTimerRunning}
         top="-125px"
         left="-170px"
         opacity={0.4}
       />
       <Circle
-        animation={isTimerRunning ? orbitAnimation3 : ''}
+        animation={orbitAnimation3}
+        isPaused={!isTimerRunning}
         top="-115px"
         left="-70px"
         opacity={0.2}
       />
       <Circle
-        animation={isTimerRunning ? orbitAnimation4 : ''}
+        animation={orbitAnimation4}
+        isPaused={!isTimerRunning}
         top="-130px"
         left="-100px"
         opacity={1}
       />
       <Circle
-        animation={isTimerRunning ? orbitAnimation5 : ''}
+        animation={orbitAnimation5}
+        isPaused={!isTimerRunning}
         top="-95px"
         left="-105px"
         opacity={0.6}
