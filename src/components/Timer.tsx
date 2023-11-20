@@ -85,7 +85,7 @@ const Circle = styled.div<CircleProps>`
   position: absolute;
   top: ${(props) => props.top};
   left: ${(props) => props.left};
-  animation: ${(props) => props.animation} 8000ms ease-in-out infinite;
+  animation: ${(props) => props.animation} 10000ms ease-in-out infinite;
   animation-play-state: ${(props) => (props.isPaused ? 'paused' : 'running')};
 `
 
@@ -180,34 +180,34 @@ const Timer = () => {
         animation={orbitAnimation1}
         isPaused={!isTimerRunning}
         top="-105px"
-        left="-150px"
+        left="-90px"
         opacity={0.8}
       />
       <Circle
         animation={orbitAnimation2}
         isPaused={!isTimerRunning}
-        top="-125px"
-        left="-170px"
+        top="-109px"
+        left="-122px"
         opacity={0.4}
       />
       <Circle
         animation={orbitAnimation3}
         isPaused={!isTimerRunning}
-        top="-115px"
-        left="-70px"
+        top="-102px"
+        left="-130px"
         opacity={0.2}
       />
       <Circle
         animation={orbitAnimation4}
         isPaused={!isTimerRunning}
-        top="-130px"
-        left="-100px"
+        top="-97px"
+        left="-95px"
         opacity={1}
       />
       <Circle
         animation={orbitAnimation5}
         isPaused={!isTimerRunning}
-        top="-95px"
+        top="-105px"
         left="-105px"
         opacity={0.6}
       />
