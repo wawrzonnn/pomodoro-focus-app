@@ -38,15 +38,17 @@ export const StopButton = () => {
   const [showText, setShowText] = useState(true);
 
   useEffect(() => {
-    let newText: string;
-    if (isTimerRunning || isTimerPaused) {
+    let newText = 'TAKE A BREAK';
+    if (mode === 'home') {
+      newText = 'TAKE A BREAK';
+    } else if (isTimerRunning || isTimerPaused) {
       newText = 'CANCEL';
     } else if ((isFocusCompleted || isBreakCompleted) && !isTimerRunning) {
       newText = 'DONE';
     } else {
       newText = mode === 'focus' ? 'TAKE A BREAK' : 'FOCUS';
     }
-
+  
     if (newText !== buttonText) {
       setShowText(false);
       setTimeout(() => {
@@ -54,11 +56,11 @@ export const StopButton = () => {
         setShowText(true);
       }, 200);
     }
-  }, [isTimerRunning, isTimerPaused, mode, isFocusCompleted, isBreakCompleted, buttonText]);
+  }, [mode, isTimerRunning, isTimerPaused, isFocusCompleted, isBreakCompleted, buttonText]);
 
   const handleClick = () => {
     if (isTimerRunning || isTimerPaused) {
-      cancelActiveMode(mode === 'focus' ? 'break' : 'focus');
+      cancelActiveMode();
     } else if (isFocusCompleted && mode === 'focus') {
       returnToHomeScreen('break');
     } else if (isBreakCompleted && mode === 'break') {

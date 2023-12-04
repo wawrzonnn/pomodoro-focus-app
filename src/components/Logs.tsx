@@ -150,14 +150,14 @@ export const Logs = () => {
 
   return (
     <>
-      <ShowLogsButton
-        show={showLogs}
-        onClick={toggleLogs}
-        disabled={isTimerRunning || isTimerPaused}
-      >
-        {showLogs && !isTimerRunning && !isTimerPaused ? 'Hide' : 'Show'} logs
-      </ShowLogsButton>
-      {showLogs && !isTimerRunning && !isTimerPaused && (
+        <ShowLogsButton
+          show={showLogs}
+          onClick={toggleLogs}
+          disabled={isTimerRunning || isTimerPaused}
+        >
+          {showLogs ? 'Hide' : 'Show'} logs
+        </ShowLogsButton>
+      {showLogs && (
         <LogsContainer show={showLogs}>
           {Object.entries(groupedLogs).map(([date, data]) => (
             <LogWrapper key={date}>

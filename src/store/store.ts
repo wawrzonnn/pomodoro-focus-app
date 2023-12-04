@@ -119,7 +119,7 @@ export const useStore = create<StoreState>((set, get) => ({
     })
   },
 
-  returnToHomeScreen: (newMode: 'focus' | 'break') => {
+  returnToHomeScreen: () => {
     const interval = get().timerInterval
     if (interval) clearInterval(interval)
 
@@ -129,7 +129,7 @@ export const useStore = create<StoreState>((set, get) => ({
       isTimerPaused: false,
       focusTime: { minutes: 25, seconds: 0 },
       breakTime: { minutes: 5, seconds: 0 },
-      mode: newMode,
+      mode: 'home',
       isFocusCompleted: false,
       isBreakCompleted: false,
       isOvertimeRunning: false,
@@ -137,19 +137,19 @@ export const useStore = create<StoreState>((set, get) => ({
     })
   },
 
-  cancelActiveMode: (newMode: 'focus' | 'break') => {
-    const interval = get().timerInterval
-    if (interval) clearInterval(interval)
+  cancelActiveMode: () => {
+    const interval = get().timerInterval;
+    if (interval) clearInterval(interval);
+    const currentMode = get().mode; 
     set({
       isTimerRunning: false,
       timerInterval: null,
       isTimerPaused: false,
-      mode: newMode,
-      isFocusCompleted: newMode === 'focus' ? false : get().isFocusCompleted,
-      isBreakCompleted: newMode === 'break' ? false : get().isBreakCompleted,
-      focusTime: { minutes: 25, seconds: 0 },
-      breakTime: { minutes: 5, seconds: 0 },
-    })
+      isFocusCompleted: currentMode === 'focus' ? false : get().isFocusCompleted,
+      isBreakCompleted: currentMode === 'break' ? false : get().isBreakCompleted,
+      focusTime: get().initialFocusTime,
+      breakTime: get().initialBreakTime,
+    });
   },
 
   startOvertime: () => {

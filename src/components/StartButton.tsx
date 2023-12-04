@@ -41,8 +41,10 @@ export const StartButton = () => {
   const [showText, setShowText] = useState(true);
 
   useEffect(() => {
-    let newText = buttonText;
-    if (isFocusCompleted && mode === 'focus') {
+    let newText = 'START FOCUS'; 
+    if (mode === 'home') {
+      newText = 'START FOCUS';
+    } else if (isFocusCompleted && mode === 'focus') {
       newText = `BREAK ${breakTime.minutes}:00`;
     } else if (isBreakCompleted && mode === 'break') {
       newText = `FOCUS ${focusTime.minutes}:00`;
@@ -53,7 +55,7 @@ export const StartButton = () => {
     } else {
       newText = mode === 'focus' ? 'START FOCUS' : 'START BREAK';
     }
-
+  
     if (newText !== buttonText) {
       setShowText(false);
       setTimeout(() => {
@@ -61,20 +63,25 @@ export const StartButton = () => {
         setShowText(true);
       }, 200);
     }
-  }, [isFocusCompleted, isBreakCompleted, isTimerRunning, isTimerPaused, mode, breakTime, focusTime, buttonText]);
+  }, [mode, isFocusCompleted, isBreakCompleted, isTimerRunning, isTimerPaused, breakTime, focusTime, buttonText]);
 
   const handleClick = () => {
     if (isTimerRunning) {
       pauseTimer();
     } else {
-      if (isFocusCompleted && mode === 'focus') {
+      if (mode === 'home') {
+        setMode('focus');
+        startTimer();
+      } else if (isFocusCompleted && mode === 'focus') {
         setMode('break');
         stopOvertime();
         startTimer();
       } else if (isBreakCompleted && mode === 'break') {
         setMode('focus');
+        startTimer();
+      } else {
+        startTimer();
       }
-      startTimer();
     }
   };
 
