@@ -26,9 +26,12 @@ export const useStore = create<StoreState>((set, get) => ({
   isTimerPaused: false,
   isTimerRunning: false,
   timerInterval: null,
+  startTime: null,
 
   startTimer: () => {
     if (get().isTimerRunning) return
+    const startTime = new Date();
+    set({ startTime, isTimerRunning: true });
     const interval = setInterval(() => {
       const {
         focusTime,
@@ -39,19 +42,21 @@ export const useStore = create<StoreState>((set, get) => ({
         isBreakCompleted,
         isFocusCompleted,
         saveLog,
+        startTimer
       } = get()
       if (mode === 'focus') {
         // FOCUS LOGIC
         if (focusTime.minutes === 0 && focusTime.seconds === 0) {
           if (!isFocusCompleted) {
             //CREATING AND SAVING COMPLETED FOCUS LOG
-            const newLog: Log = {
-              mode: PomodoroMode.FOCUS,
-              time: initialFocusTime.minutes * 60 + initialFocusTime.seconds,
-              createdAt: new Date(),
-              startTime: new Date(),
-            }
-            saveLog(newLog)
+            const endTime = new Date();
+        const newLog: Log = {
+          mode: PomodoroMode.FOCUS,
+          time: initialFocusTime.minutes * 60 + initialFocusTime.seconds,
+          createdAt: endTime,
+          startTime: startTime,
+        };
+        saveLog(newLog);
           }
           clearInterval(interval)
           set({
@@ -73,13 +78,14 @@ export const useStore = create<StoreState>((set, get) => ({
         if (breakTime.minutes === 0 && breakTime.seconds === 0) {
           if (!isBreakCompleted) {
             //CREATING AND SAVING COMPLETED BREAK LOG
+            const endTime = new Date();
             const newLog: Log = {
               mode: PomodoroMode.BREAK,
               time: initialBreakTime.minutes * 60 + initialBreakTime.seconds,
-              createdAt: new Date(),
-              startTime: new Date(),
-            }
-            saveLog(newLog)
+              createdAt: endTime,
+              startTime: startTime,
+            };
+            saveLog(newLog);
           }
           clearInterval(interval)
           set({
@@ -175,10 +181,21 @@ export const useStore = create<StoreState>((set, get) => ({
   },
 
   saveLog: (log: Log) => {
-    const logs = JSON.parse(localStorage.getItem('logs') || '[]')
-    logs.push(log)
-    localStorage.setItem('logs', JSON.stringify(logs))
-    console.log(log)
+    const { startTime } = get();
+    const endTime = new Date();
+
+    const newLog = {
+      ...log,
+      startTime: startTime, 
+      createdAt: endTime,
+    };
+
+    const logs = JSON.parse(localStorage.getItem('logs') || '[]');
+    logs.push(newLog);
+    localStorage.setItem('logs', JSON.stringify(logs));
+    console.log(newLog);
+
+    set(state => ({ ...state, startTime: null }));
   },
 
   addFakeLogs: () => {

@@ -185,7 +185,7 @@ export const Logs = () => {
                 data.logs.map((log, index: React.Key | null | undefined) => (
                   <LogEntry key={index} show={showDetails[date]}>
                     <LogDetails>
-                      {formatTime(log.startTime, log.time)}{' '}
+                      {log.startTime ? formatTime(log.startTime, log.time) : ''}
                     </LogDetails>
                     <LogDetails>
                       {log.mode === PomodoroMode.FOCUS ? 'FOCUS' : 'BREAK'}

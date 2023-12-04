@@ -12,10 +12,11 @@ export interface Log {
   mode: PomodoroMode
   time: number
   createdAt: Date
-  startTime: Date
+  startTime: Date | null
 }
 
 export interface StoreState {
+  startTime: Date | null
   logs: any
   mode: 'focus' | 'break'
   setMode: (mode: 'focus' | 'break') => void
