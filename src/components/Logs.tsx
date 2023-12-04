@@ -33,7 +33,7 @@ const ShowLogsButton = styled.button<StyledButtonProps>`
 `
 
 const LogsContainer = styled.div<{ show: boolean }>`
-  background: #191b17;
+  background: rgba(254, 242, 231, 0.1);
   width: 100%;
   display: flex;
   align-items: center;
@@ -104,7 +104,7 @@ const Separator = styled.span`
 `
 const LogEntry = styled.div<{ show: boolean }>`
   height: 40px;
-  background: #0d0f0c;
+  background: rgba(254, 242, 231, 0.1);
   width: 350px;
   padding: 0px 25px;
   display: flex;
@@ -150,50 +150,53 @@ export const Logs = () => {
 
   return (
     <>
-      <ShowLogsButton show={showLogs} onClick={toggleLogs} disabled={isTimerRunning || isTimerPaused}>
+      <ShowLogsButton
+        show={showLogs}
+        onClick={toggleLogs}
+        disabled={isTimerRunning || isTimerPaused}
+      >
         {showLogs && !isTimerRunning && !isTimerPaused ? 'Hide' : 'Show'} logs
       </ShowLogsButton>
-      {showLogs && !isTimerRunning && !isTimerPaused &&
-      (
-          <LogsContainer show={showLogs}>
-            {Object.entries(groupedLogs).map(([date, data]) => (
-              <LogWrapper key={date}>
-                <DayContainer onClick={() => toggleDetails(date)}>
-                  <DateWrapper>
-                    <Date>{date.split(' ')[0]}</Date>
-                    <Date>{date.split(' ').slice(1).join(' ')}</Date>
-                  </DateWrapper>
-                  <TotalTime>
-                    <TimeEntryWrapper>
-                      <TimeEntry>{data.totalFocus}</TimeEntry>
-                      <TimeEntryLabel>FOCUS</TimeEntryLabel>
-                    </TimeEntryWrapper>
-                    <Separator></Separator>
-                    <TimeEntryWrapper>
-                      <TimeEntry>{data.totalBreak}</TimeEntry>
-                      <TimeEntryLabel>BREAK</TimeEntryLabel>
-                    </TimeEntryWrapper>
-                    <ToggleArrow>
-                      {showDetails[date] ? <ArrowDown /> : <ArrowRight />}
-                    </ToggleArrow>
-                  </TotalTime>
-                </DayContainer>
-                {showDetails[date] &&
-                  data.logs.map((log, index: React.Key | null | undefined) => (
-                    <LogEntry key={index} show={showDetails[date]}>
-                      <LogDetails>
-                        {formatTime(log.startTime, log.time)}{' '}
-                      </LogDetails>
-                      <LogDetails>
-                        {log.mode === PomodoroMode.FOCUS ? 'FOCUS' : 'BREAK'}
-                      </LogDetails>
-                      <LogDuration>{log.time / 60}</LogDuration>
-                    </LogEntry>
-                  ))}
-              </LogWrapper>
-            ))}
-          </LogsContainer>
-        )}
+      {showLogs && !isTimerRunning && !isTimerPaused && (
+        <LogsContainer show={showLogs}>
+          {Object.entries(groupedLogs).map(([date, data]) => (
+            <LogWrapper key={date}>
+              <DayContainer onClick={() => toggleDetails(date)}>
+                <DateWrapper>
+                  <Date>{date.split(' ')[0]}</Date>
+                  <Date>{date.split(' ').slice(1).join(' ')}</Date>
+                </DateWrapper>
+                <TotalTime>
+                  <TimeEntryWrapper>
+                    <TimeEntry>{data.totalFocus}</TimeEntry>
+                    <TimeEntryLabel>FOCUS</TimeEntryLabel>
+                  </TimeEntryWrapper>
+                  <Separator></Separator>
+                  <TimeEntryWrapper>
+                    <TimeEntry>{data.totalBreak}</TimeEntry>
+                    <TimeEntryLabel>BREAK</TimeEntryLabel>
+                  </TimeEntryWrapper>
+                  <ToggleArrow>
+                    {showDetails[date] ? <ArrowDown /> : <ArrowRight />}
+                  </ToggleArrow>
+                </TotalTime>
+              </DayContainer>
+              {showDetails[date] &&
+                data.logs.map((log, index: React.Key | null | undefined) => (
+                  <LogEntry key={index} show={showDetails[date]}>
+                    <LogDetails>
+                      {formatTime(log.startTime, log.time)}{' '}
+                    </LogDetails>
+                    <LogDetails>
+                      {log.mode === PomodoroMode.FOCUS ? 'FOCUS' : 'BREAK'}
+                    </LogDetails>
+                    <LogDuration>{log.time / 60}</LogDuration>
+                  </LogEntry>
+                ))}
+            </LogWrapper>
+          ))}
+        </LogsContainer>
+      )}
     </>
   )
 }
