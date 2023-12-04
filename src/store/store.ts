@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { StoreState, Log, PomodoroMode } from '../types/types'
 
 export const useStore = create<StoreState>((set, get) => ({
-  mode: 'focus',
+  mode: 'home',
   setMode: (mode) => set({ mode }),
 
   initialFocusTime: { minutes: 25, seconds: 0 },
