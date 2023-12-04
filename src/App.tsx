@@ -31,7 +31,7 @@ const Separator = styled.div`
 `
 
 function App() {
-  const { setFocusTime, setBreakTime, addFakeLogs } = useStore()
+  const { setFocusTime, setBreakTime, addFakeLogs, mode } = useStore()
   const [isPanelVisible, setIsPanelVisible] = useState(false)
 
   const togglePanelVisibility = () => {
@@ -62,8 +62,12 @@ function App() {
       <Timer />
       <StartButton />
       <StopButton />
-      <Separator />
-      <Logs />
+      {mode === 'home' && (
+        <>
+          <Separator />
+          <Logs />
+        </>
+      )}
     </Container>
   )
 }

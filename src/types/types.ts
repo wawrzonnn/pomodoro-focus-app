@@ -6,6 +6,7 @@ export interface TimerState {
 export enum PomodoroMode {
   BREAK = 'BREAK',
   FOCUS = 'FOCUS',
+  HOME = 'HOME'
 }
 
 export interface Log {
@@ -18,7 +19,7 @@ export interface Log {
 export interface StoreState {
   startTime: Date | null
   logs: any
-  mode: 'focus' | 'break'
+  mode: 'focus' | 'break' | 'home'
   setMode: (mode: 'focus' | 'break') => void
 
   initialFocusTime: TimerState
@@ -46,7 +47,7 @@ export interface StoreState {
   startTimer: () => void
   pauseTimer: () => void
   stopOvertime: () => void
-  cancelActiveMode: (newMode: 'focus' | 'break') => void
+  cancelActiveMode: () => void
   returnToHomeScreen: (newMode: 'focus' | 'break') => void
   startOvertime: () => void
   saveLog: (log: Log) => void
