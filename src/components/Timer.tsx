@@ -28,7 +28,7 @@ const TimerContainer = styled.div`
   align-items: center;
   gap: 15px;
   min-height: 158px;
-  width: 168px;
+  // width: 168px;
 `
 
 const TimeDisplay = styled.span`
