@@ -28,13 +28,14 @@ const TimerContainer = styled.div`
   align-items: center;
   gap: 15px;
   min-height: 158px;
+  width: 168px;
 `
 
 const TimeDisplay = styled.span`
   margin-top: 25px;
   color: var(--Beige, #fef2e7);
   text-align: center;
-  font-family: Roboto;
+  font-family: Inter;
   font-size: 60px;
   font-style: normal;
   font-weight: 300;
@@ -50,7 +51,7 @@ const ButtonsContainer = styled.div`
 const Overtime = styled.div`
   color: var(--Beige, #fef2e7);
   text-align: center;
-  font-family: Roboto;
+  font-family: Inter;
   font-size: 30px;
   font-style: normal;
   font-weight: 300;
