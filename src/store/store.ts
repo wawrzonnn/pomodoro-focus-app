@@ -30,8 +30,8 @@ export const useStore = create<StoreState>((set, get) => ({
 
   startTimer: () => {
     if (get().isTimerRunning) return
-    const startTime = new Date();
-    set({ startTime, isTimerRunning: true });
+    const startTime = new Date()
+    set({ startTime, isTimerRunning: true })
     const interval = setInterval(() => {
       const {
         focusTime,
@@ -42,22 +42,11 @@ export const useStore = create<StoreState>((set, get) => ({
         isBreakCompleted,
         isFocusCompleted,
         saveLog,
-        startTimer
+        startTimer,
       } = get()
       if (mode === 'focus') {
         // FOCUS LOGIC
         if (focusTime.minutes === 0 && focusTime.seconds === 0) {
-          if (!isFocusCompleted) {
-            //CREATING AND SAVING COMPLETED FOCUS LOG
-            const endTime = new Date();
-        const newLog: Log = {
-          mode: PomodoroMode.FOCUS,
-          time: initialFocusTime.minutes * 60 + initialFocusTime.seconds,
-          createdAt: endTime,
-          startTime: startTime,
-        };
-        saveLog(newLog);
-          }
           clearInterval(interval)
           set({
             isOvertimeRunning: true,
@@ -78,14 +67,14 @@ export const useStore = create<StoreState>((set, get) => ({
         if (breakTime.minutes === 0 && breakTime.seconds === 0) {
           if (!isBreakCompleted) {
             //CREATING AND SAVING COMPLETED BREAK LOG
-            const endTime = new Date();
+            const endTime = new Date()
             const newLog: Log = {
               mode: PomodoroMode.BREAK,
               time: initialBreakTime.minutes * 60 + initialBreakTime.seconds,
               createdAt: endTime,
               startTime: startTime,
-            };
-            saveLog(newLog);
+            }
+            saveLog(newLog)
           }
           clearInterval(interval)
           set({
@@ -138,18 +127,20 @@ export const useStore = create<StoreState>((set, get) => ({
   },
 
   cancelActiveMode: () => {
-    const interval = get().timerInterval;
-    if (interval) clearInterval(interval);
-    const currentMode = get().mode; 
+    const interval = get().timerInterval
+    if (interval) clearInterval(interval)
+    const currentMode = get().mode
     set({
       isTimerRunning: false,
       timerInterval: null,
       isTimerPaused: false,
-      isFocusCompleted: currentMode === 'focus' ? false : get().isFocusCompleted,
-      isBreakCompleted: currentMode === 'break' ? false : get().isBreakCompleted,
+      isFocusCompleted:
+        currentMode === 'focus' ? false : get().isFocusCompleted,
+      isBreakCompleted:
+        currentMode === 'break' ? false : get().isBreakCompleted,
       focusTime: get().initialFocusTime,
       breakTime: get().initialBreakTime,
-    });
+    })
   },
 
   startOvertime: () => {
@@ -169,33 +160,52 @@ export const useStore = create<StoreState>((set, get) => ({
     }
   },
 
-  stopOvertime: () => {
-    const interval = get().timerInterval
-    if (interval) clearInterval(interval)
+  saveLog: (log: Log) => {
+    const { startTime } = get()
+    const endTime = new Date()
 
+    const newLog = {
+      ...log,
+      startTime: startTime,
+      createdAt: endTime,
+    }
+
+    const logs = JSON.parse(localStorage.getItem('logs') || '[]')
+    logs.push(newLog)
+    localStorage.setItem('logs', JSON.stringify(logs))
+    console.log(newLog)
+
+    set((state) => ({ ...state, startTime: null }))
+  },
+  stopOvertime: () => {
+    const { initialFocusTime, overtime, saveLog } = get();
+    const interval = get().timerInterval;
+    if (interval) clearInterval(interval);
+  
+    const endTime = new Date();
+
+    const initialFocusTimeMs = (initialFocusTime.minutes * 60 + initialFocusTime.seconds) * 1000;
+    const overtimeMs = (overtime.minutes * 60 + overtime.seconds) * 1000;
+
+    const startTime = new Date(endTime.getTime() - initialFocusTimeMs - overtimeMs);
+
+    const totalTimeInSeconds = Math.round((initialFocusTimeMs + overtimeMs) / 1000);
+    const totalTimeInMinutes = Math.round(totalTimeInSeconds / 60);
+  
+    const newLog: Log = {
+      mode: PomodoroMode.FOCUS,
+      time: totalTimeInMinutes * 60,
+      createdAt: endTime,
+      startTime: startTime,
+    }
+  
+    saveLog(newLog);
+  
     set({
       isOvertimeRunning: false,
       overtime: { minutes: 0, seconds: 0 },
       timerInterval: null,
-    })
-  },
-
-  saveLog: (log: Log) => {
-    const { startTime } = get();
-    const endTime = new Date();
-
-    const newLog = {
-      ...log,
-      startTime: startTime, 
-      createdAt: endTime,
-    };
-
-    const logs = JSON.parse(localStorage.getItem('logs') || '[]');
-    logs.push(newLog);
-    localStorage.setItem('logs', JSON.stringify(logs));
-    console.log(newLog);
-
-    set(state => ({ ...state, startTime: null }));
+    });
   },
 
   addFakeLogs: () => {
