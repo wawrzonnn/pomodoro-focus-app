@@ -73,8 +73,8 @@ export const StartButton = () => {
         setMode('focus');
         startTimer();
       } else if (isFocusCompleted && mode === 'focus') {
-        setMode('break');
         stopOvertime();
+        setMode('break');
         startTimer();
       } else if (isBreakCompleted && mode === 'break') {
         setMode('focus');

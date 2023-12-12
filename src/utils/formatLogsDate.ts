@@ -34,7 +34,7 @@ export const groupLogsByDate = (logs: Log[]): GroupedLogs => {
     }
     acc[date].logs.push({ ...log, startTime: log.createdAt })
     if (log.mode === PomodoroMode.FOCUS) {
-      acc[date].totalFocus += log.time / 60
+      acc[date].totalFocus += Math.round(log.time / 60);
     } else {
       acc[date].totalBreak += log.time / 60
     }

@@ -32,6 +32,7 @@ export const StopButton = () => {
     isBreakCompleted,
     returnToHomeScreen,
     cancelActiveMode,
+    stopOvertime
   } = useStore();
 
   const [buttonText, setButtonText] = useState('TAKE A BREAK');
@@ -61,12 +62,13 @@ export const StopButton = () => {
   const handleClick = () => {
     if (isTimerRunning || isTimerPaused) {
       cancelActiveMode();
-    } else if (isFocusCompleted && mode === 'focus') {
-      returnToHomeScreen('break');
+    } else if (isFocusCompleted && (mode === 'focus' || mode === 'home')) {
+      stopOvertime();
+      returnToHomeScreen('break'); 
     } else if (isBreakCompleted && mode === 'break') {
       returnToHomeScreen('focus');
     } else {
-      setMode(mode === 'focus' ? 'break' : 'focus');
+      setMode(mode === 'focus' || mode === 'home' ? 'break' : 'focus');
     }
   };
 

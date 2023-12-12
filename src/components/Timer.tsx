@@ -132,7 +132,7 @@ const Timer = () => {
   }
 
   const handleIncrease = () => {
-    if (mode === 'focus') {
+    if (mode === 'focus' || mode === 'home') {
       setFocusTime({ ...focusTime, minutes: focusTime.minutes + 5 })
       setInitialFocusTime({
         ...initialFocusTime,
@@ -153,7 +153,8 @@ const Timer = () => {
     return `${formattedMinutes}:${formattedSeconds}`
   }
 
-  const currentTimerValue = mode === 'focus' ? focusTime : breakTime
+  const currentTimerValue = (mode === 'focus' || mode === 'home') ? focusTime : breakTime;
+
 
   const formattedOvertime = `+ ${formatTime(overtime)}`
 
@@ -181,28 +182,28 @@ const Timer = () => {
         animation={orbitAnimation1}
         isPaused={!isTimerRunning}
         top="-105px"
-        left="-90px"
+        left="-105px"
         opacity={0.8}
       />
       <Circle
         animation={orbitAnimation2}
         isPaused={!isTimerRunning}
         top="-109px"
-        left="-122px"
+        left="-137px"
         opacity={0.4}
       />
       <Circle
         animation={orbitAnimation3}
         isPaused={!isTimerRunning}
         top="-102px"
-        left="-130px"
+        left="-145px"
         opacity={0.2}
       />
       <Circle
         animation={orbitAnimation4}
         isPaused={!isTimerRunning}
         top="-97px"
-        left="-95px"
+        left="-105px"
         opacity={1}
       />
       <Circle
