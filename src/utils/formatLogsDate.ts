@@ -12,7 +12,7 @@ export const formatDate = (date: string | number | Date) => {
   const d = new Date(date)
   const options: Intl.DateTimeFormatOptions = {
     weekday: 'long',
-    year: 'numeric',
+    year: '2-digit',
     month: '2-digit',
     day: '2-digit',
   }
