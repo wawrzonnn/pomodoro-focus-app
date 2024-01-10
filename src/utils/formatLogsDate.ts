@@ -17,7 +17,7 @@ export const formatDate = (date: string | number | Date) => {
     day: '2-digit',
   }
   return d
-    .toLocaleDateString('en-US', options)
+    .toLocaleDateString('en-GB', options)
     .replace(/,/g, '')
     .replace(/\//g, '.')
 }
