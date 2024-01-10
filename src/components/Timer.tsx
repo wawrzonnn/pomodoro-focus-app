@@ -110,7 +110,7 @@ const Timer = () => {
   } = useStore()
 
   const handleDecrease = () => {
-    if (mode === 'focus') {
+    if (mode === 'focus' || mode === 'home') {
       setFocusTime({
         ...focusTime,
         minutes: Math.max(focusTime.minutes - 5, 5),

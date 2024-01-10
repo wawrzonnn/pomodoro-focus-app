@@ -28,8 +28,6 @@ const ShowLogsButton = styled.button<StyledButtonProps>`
   outline: none;
   margin-bottom: 10px;
   cursor: pointer;
-  animation: ${(props) => (props.show ? fadeIn : fadeOut)} 0.6s ease-in-out;
-  animation-fill-mode: forwards;
 `
 
 const LogsContainer = styled.div<{ show: boolean }>`
@@ -42,8 +40,6 @@ const LogsContainer = styled.div<{ show: boolean }>`
   gap: 5px;
   transform-origin: top;
   overflow: hidden;
-  animation: ${(props) => (props.show ? expand : collapse)} 0.7s ease-in-out;
-  animation-fill-mode: forwards;
 `
 const LogWrapper = styled.div`
   display: flex;
@@ -112,8 +108,6 @@ const LogEntry = styled.div<{ show: boolean }>`
   align-items: center;
   border-top: 1px solid #000300;
   border-bottom: 1px solid #000300;
-  animation: ${(props) => (props.show ? slideIn : slideOut)} 0.3s ease-in-out;
-  animation-fill-mode: forwards;
 `
 
 const LogDetails = styled(BaseText)``
